@@ -1,0 +1,18 @@
+# Gambas Project File 3.0
+Title=MINavega
+Startup=modMain
+Icon=minavega.png
+Version=0.0.4
+Component=gb.args
+Component=gb.image
+Component=gb.gtk3
+Component=gb.form
+Component=gb.form.dialog
+Component=gb.gtk3.webview
+Component=gb.util.web
+Description="Navegue pelos aplicativos desenvolvidos em PHP para desktop."
+Authors="Murilo Gomes Julio <contatomestredainfo@gmail.com>"
+TabSize=2
+Language=pt_BR
+Vendor=mestredainfo
+Packager=1

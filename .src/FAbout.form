@@ -1,0 +1,20 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,73,60)
+  Font = Font["12"]
+  Text = ("Sobre MINavega")
+  Icon = Picture["minavega.png"]
+  Resizable = False
+  { Label2 Label
+    MoveScaled(1,1,66,32)
+    Alignment = Align.TopLeft
+    Text = ("Desenvolvido por: Murilo Gomes Julio\n\nMestre da Info\nSite: https://www.mestredainfo.com.br\n\nCopyright (C) 2004-2024 Murilo Gomes Julio\nLicença: GPL-2.0-only")
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,26,69,33)
+    ReadOnly = True
+    Wrap = True
+    ScrollBar = Scroll.Vertical
+  }
+}

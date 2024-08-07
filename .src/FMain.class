@@ -1,0 +1,213 @@
+' Gambas class file
+
+' Copyright (C) 2004-2024 Murilo Gomes Julio
+' SPDX-License-Identifier: GPL-2.0-only
+
+' Mestre da Info
+' Site: https://www.mestredainfo.com.br
+
+Public sAppArgs As String[]
+Public sAppConfig As Variant
+Private sProcess As Process
+Private sCount As Integer = 1
+Public sURL As String = ""
+Public sRouter As Boolean = False
+
+Public Sub Form_Resize()
+  
+  wb.Width = Me.Width
+  wb.Height = Me.Height - 17
+  
+End
+
+Public Sub lh_Start()
+  
+  Sleep 1
+  Dim minavegaArgs As String
+  Dim iCount As Integer = 1
+  For Each row As String In sAppArgs
+    If iCount = 3 Then
+      If minavegaArgs = "" Then 
+        minavegaArgs = row
+      Else 
+        minavegaArgs &= " " & row
+      Endif 
+    Else 
+      iCount += 1
+    Endif
+  Next
+  
+  Dim sEnv As String = "MINAVEGA_APPDIR=" & sAppArgs[1] & "/app"
+  sEnv &= " MINAVEGA_HOMEDIR=" & User.Home
+  sEnv &= " MINAVEGA_USERNAME=" & User.Name
+  sEnv &= " MINAVEGA_LANG=" & System.Language
+  sEnv &= " MINAVEGA_ARGS=" & minavegaArgs
+  
+  If IsNull(sAppConfig["config"]) = False Then
+    If IsNull(sAppConfig["config"]["ini"]) = False Then
+      If sAppConfig["config"]["ini"] = True Then 
+        sEnv &= " PHP_INI_SCAN_DIR=:" & sAppArgs[1] & "/config/"
+      Endif 
+    Endif
+  Endif 
+  
+  If sRouter Then 
+    sProcess = Shell sEnv & " php -S 127.0.0.1:0 -c " & Application.Path & "/config/config.ini" & " -t " & sAppArgs[1] & "/app/ " & sAppArgs[1] & "/core/router.php" For Input As "Process"
+  Else
+    sProcess = Shell sEnv & " php -S 127.0.0.1:0 -c " & Application.Path & "/config/config.ini" & " -t " & sAppArgs[1] & "/app/" For Input As "Process"
+  Endif 
+  Sleep 1
+  
+End
+
+Public Sub Process_Read()
+  
+  Dim sLine As String
+  Dim sHost As String
+  
+  Read #Last, sLine, -256
+  
+  If Not sLine = "" Then
+    If sCount = 1 Then
+      Shell "echo '" & sLine & "' | grep -oh '127.0.0.1:[0-9]*'" Wait To sHost
+      
+      wb.Url = "http://" & sHost
+      
+      sCount = 2
+    Endif
+  Endif 
+  
+End
+
+Public Sub Form_Open()
+  
+  If sURL.Len > 0 Then
+    wb.Url = sURL
+  Endif
+  
+End
+
+Public Sub Form_Close()
+  
+  If sURL = "" Then
+    sProcess.Kill()
+    Quit
+  Endif 
+  
+End
+
+Public Sub wb_NewView()
+  
+  Dim FBrowser As New FMain
+  
+  FBrowser.sURL = wb.Link
+  FBrowser.Show()
+  
+End
+
+Public Sub wb_Title()
+  
+  Me.Text = wb.Title
+  
+End
+
+Public Sub mnuAtualizar_Click()
+  
+  wb.Refresh()
+  
+End
+
+Public Sub wb_Icon()
+  
+  Me.Icon = wb.Icon
+  
+End
+
+Public Sub wb_Url()
+  
+  Dim sTerm As String = ""
+  Dim sParts As String[]
+  
+  If InStr(wb.Url, "#minavega=openfile") Then   
+    Dialog.OpenFile()
+    If Not Dialog.Path = "" Then 
+      wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaOpenFile('" & Dialog.Path & "');")
+    Else 
+      wb.ExecJavascript("window.location.assign('#minavega=noaction');")
+    Endif
+  Else If InStr(wb.Url, "#minavega=savefile") Then
+    Dialog.SaveFile()
+    If Not Dialog.Path = "" Then 
+      wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaSaveFile('" & Dialog.Path & "');")
+    Endif  
+  Else If InStr(wb.Url, "#minavega=selectdirectory") Then
+    Dialog.SelectDirectory()
+    If Not Dialog.Path = "" Then 
+      wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaSelectDirectory('" & Dialog.Path & "');")
+    Endif
+  Else If InStr(wb.Url, "#minavega=runapp") Then
+    sParts = Split(wb.Url, "|")
+    Shell "xdg-open \"" & sParts[1] & "\"" To sTerm
+    wb.ExecJavascript("window.location.assign('#minavega=noaction');")    
+  Else If InStr(wb.Url, "#minavega=alert") Then 
+    Dim msgAlert As String[] = Split(wb.Url, "|")
+    
+    If (msgAlert[2] = "info") Then
+      If (msgAlert.Count > 3) Then
+        Message.Info(URL.Decode(msgAlert[1]), URL.Decode(msgAlert[3]))
+      Else 
+        Message.Info(URL.Decode(msgAlert[1]))
+      Endif 
+    Endif
+    wb.ExecJavascript("window.location.assign('#minavega=noaction');")   
+  Else If InStr(wb.Url, "#minavega=confirm") Then 
+    Dim msgConfirm As String[] = Split(wb.Url, "|")
+    
+    If (msgConfirm.Count > 2) Then
+      If Message.Question(URL.Decode(msgConfirm[1]), URL.Decode(msgConfirm[2]), URL.Decode(msgConfirm[3])) = 1 Then 
+        wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaConfirm(1)")
+      Else 
+        wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaConfirm(2)")
+      Endif
+    Else 
+      If Message.Question(URL.Decode(msgConfirm[1])) = 1 Then 
+        wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaConfirm(1)")
+      Else 
+        wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaConfirm(2)")
+      Endif
+    Endif 
+    
+    wb.ExecJavascript("window.location.assign('#minavega=noaction');")   
+  Else If InStr(wb.Url, "#minavega=quit") Then 
+    Quit 
+  Endif
+Catch 
+  Message.Error(Error.Text)
+  
+End
+
+Public Sub mnuRefresh_Click()
+  
+  wb.Reload()
+  
+End
+
+Public Sub mnuDocumentacao_Click()
+
+  Dim sTerm As String = ""
+  Shell "xdg-open \"https://www.mestredainfo.com.br/2024/08/minavega.html\"" To sTerm
+  
+End
+
+Public Sub mnuApoie_Click()
+
+  Dim sTerm As String = ""
+  Shell "xdg-open \"https://www.mestredainfo.com.br/p/apoie.html\"" To sTerm
+  
+End
+
+Public Sub mnuAbout_Click()
+  
+  FAbout.Show()
+  
+End

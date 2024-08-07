@@ -1,0 +1,33 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,64)
+  Background = &HFFFFFF
+  Text = ("MINavega")
+  Icon = Picture["minavega.png"]
+  { mnuSobre Menu
+    Text = ("MINavega")
+    { mnuRefresh Menu
+      Text = ("Atualizar")
+      Shortcut = "F5"
+    }
+    { Separador1 Menu
+    }
+    { mnuDocumentacao Menu
+      Text = ("Documentação")
+    }
+    { Separador2 Menu
+    }
+    { mnuApoie Menu
+      Text = ("Apoie")
+    }
+    { Separador3 Menu
+    }
+    { mnuAbout Menu
+      Text = ("Sobre MINavega")
+    }
+  }
+  { wb WebView
+    MoveScaled(0,0,27,22)
+  }
+}

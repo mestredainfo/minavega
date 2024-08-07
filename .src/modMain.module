@@ -1,0 +1,42 @@
+' Gambas module file
+
+' Copyright (C) 2004-2024 Murilo Gomes Julio
+' SPDX-License-Identifier: GPL-2.0-only
+
+' Mestre da Info
+' Site: https://www.mestredainfo.com.br
+
+Public Sub Main()  
+  If Args.Count > 1 Then 
+    If Exist(Args[1]) Then
+      If Exist(Args[1] & "/package.json") Then 
+        Dim sPackage As Variant = JSON.Decode(File.load(Args[1] & "/package.json"), True)
+      
+        FMain.sAppConfig = sPackage
+        FMain.sAppArgs = Args.All
+        FMain.Text = sPackage["app"]["name"]
+        FMain.width = sPackage["app"]["width"]
+        FMain.height = sPackage["app"]["height"]
+        FMain.Resizable = sPackage["app"]["resizable"]
+        FMain.sRouter = sPackage["config"]["router"]
+        
+        If Exist(Args[1] & "/icon/" & sPackage["app"]["id"] & ".png") Then
+          FMain.Icon = Picture.Load(Args[1] & "/icon/" & sPackage["app"]["id"] & ".png")
+        Endif
+        
+        FMain.lh_Start()
+        
+        FMain.Show()
+      Else 
+        Message.Error("File \"package.json\" not found!")
+      Endif
+    Else 
+      Message.Error("App not found!")
+    Endif 
+  Else 
+    Message.Error("App not found!")
+  Endif
+Catch 
+  Message.Error(Error.Text)
+  
+End
