@@ -5,7 +5,13 @@
 // Mestre da Info
 // Site: https://www.mestredainfo.com.br
 
-$sock = socket_create_listen(0);
-socket_getsockname($sock, $addr, $port);
-echo $port;
-socket_close($sock);
+function minavegaServer():int {
+  $sock = socket_create_listen(0);
+  socket_getsockname($sock, $addr, $port);
+  $sPort = $port;
+  socket_close($sock);
+
+  return $sPort;
+}
+
+echo minavegaServer();
