@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,73,60)
+  MoveScaled(0,0,73,71)
   Font = Font["12"]
   Text = ("Sobre MINavega")
   Icon = Picture["minavega.png"]
@@ -13,35 +13,39 @@
     Text = ("MINavega")
   }
   { TextArea1 TextArea
-    MoveScaled(1,24,71,35)
+    MoveScaled(1,29,71,41)
     ReadOnly = True
     Wrap = True
     ScrollBar = Scroll.Vertical
   }
   { Label1 Label
-    MoveScaled(1,16,66,4)
+    MoveScaled(1,20,66,4)
     Alignment = Align.TopLeft
     Text = ("Copyright (C) 2004-2024 Murilo Gomes Julio")
   }
   { Label3 Label
-    MoveScaled(1,5,66,4)
+    MoveScaled(1,9,66,4)
     Alignment = Align.TopLeft
     Text = ("Desenvolvido por: Murilo Gomes Julio")
   }
   { Label4 Label
-    MoveScaled(1,12,37,4)
+    MoveScaled(1,16,37,4)
     Text = ("Site:")
   }
   { Label5 Label
-    MoveScaled(1,8,32,4)
+    MoveScaled(1,12,32,4)
     Text = ("Mestre da Info")
   }
   { URLLabel1 URLLabel
-    MoveScaled(6,12,42,4)
+    MoveScaled(6,16,42,4)
     Text = ("www.mestredainfo.com.br")
   }
   { Label6 Label
-    MoveScaled(1,19,30,5)
+    MoveScaled(1,23,30,5)
     Text = ("Licença: GPL-2.0-only")
+  }
+  { Label7 Label
+    MoveScaled(1,5,70,3)
+    Text = ("Navegue em aplicativos desenvolvidos em PHP para desktop.")
   }
 }
