@@ -190,7 +190,7 @@ Public Sub wb_Url()
     Dim newwindowResizable As Boolean = True
     
     If sNewWindow.Count = 2 Then 
-      If InStr(sNewWindow[1], "http") Then 
+      If InStr(sNewWindow[1], "http") Or InStr(sNewWindow[1], "https") Then 
         newwindowURL = sNewWindow[1]
       Else 
         If Left(sNewWindow[1]) = "/" Then 
@@ -200,6 +200,8 @@ Public Sub wb_Url()
         Endif 
       Endif 
     Endif
+    
+    Print newwindowURL
     
     If sNewWindow.Count = 3 Then 
       newwindowWidth = sNewWindow[2]
