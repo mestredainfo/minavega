@@ -7,14 +7,41 @@
   Icon = Picture["minavega.png"]
   Resizable = False
   { Label2 Label
-    MoveScaled(1,1,66,32)
+    MoveScaled(1,1,66,4)
+    Font = Font["Bold"]
     Alignment = Align.TopLeft
-    Text = ("Desenvolvido por: Murilo Gomes Julio\n\nMestre da Info\nSite: https://www.mestredainfo.com.br\n\nCopyright (C) 2004-2024 Murilo Gomes Julio\nLicença: GPL-2.0-only")
+    Text = ("MINavega")
   }
   { TextArea1 TextArea
-    MoveScaled(1,26,69,33)
+    MoveScaled(1,24,71,35)
     ReadOnly = True
     Wrap = True
     ScrollBar = Scroll.Vertical
+  }
+  { Label1 Label
+    MoveScaled(1,16,66,4)
+    Alignment = Align.TopLeft
+    Text = ("Copyright (C) 2004-2024 Murilo Gomes Julio")
+  }
+  { Label3 Label
+    MoveScaled(1,5,66,4)
+    Alignment = Align.TopLeft
+    Text = ("Desenvolvido por: Murilo Gomes Julio")
+  }
+  { Label4 Label
+    MoveScaled(1,12,37,4)
+    Text = ("Site:")
+  }
+  { Label5 Label
+    MoveScaled(1,8,32,4)
+    Text = ("Mestre da Info")
+  }
+  { URLLabel1 URLLabel
+    MoveScaled(6,12,42,4)
+    Text = ("www.mestredainfo.com.br")
+  }
+  { Label6 Label
+    MoveScaled(1,19,30,5)
+    Text = ("Licença: GPL-2.0-only")
   }
 }
