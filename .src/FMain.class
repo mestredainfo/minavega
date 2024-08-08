@@ -156,18 +156,30 @@ Public Sub wb_Url()
   Else If InStr(wb.Url, "#minavega=alert") Then 
     Dim msgAlert As String[] = Split(wb.Url, "|")
     
-    If (msgAlert[2] = "info") Then
-      If (msgAlert.Count > 3) Then
+    If msgAlert[2] = "info" Then
+      If msgAlert.Count > 3 Then
         Message.Info(URL.Decode(msgAlert[1]), URL.Decode(msgAlert[3]))
       Else 
         Message.Info(URL.Decode(msgAlert[1]))
+      Endif 
+    Else If msgAlert[2] = "warning" Then
+      If msgAlert.Count > 3 Then
+        Message.Warning(URL.Decode(msgAlert[1]), URL.Decode(msgAlert[3]))
+      Else 
+        Message.Warning(URL.Decode(msgAlert[1]))
+      Endif 
+    Else If msgAlert[2] = "error" Then
+      If msgAlert.Count > 3 Then
+        Message.Error(URL.Decode(msgAlert[1]), URL.Decode(msgAlert[3]))
+      Else 
+        Message.Error(URL.Decode(msgAlert[1]))
       Endif 
     Endif
     wb.ExecJavascript("window.location.assign('#minavega=noaction');")   
   Else If InStr(wb.Url, "#minavega=confirm") Then 
     Dim msgConfirm As String[] = Split(wb.Url, "|")
     
-    If (msgConfirm.Count > 2) Then
+    If msgConfirm.Count > 2 Then
       If Message.Question(URL.Decode(msgConfirm[1]), URL.Decode(msgConfirm[2]), URL.Decode(msgConfirm[3])) = 1 Then 
         wb.ExecJavascript("window.location.assign('#minavega=noaction');minavegaConfirm(1)")
       Else 
@@ -188,8 +200,8 @@ Public Sub wb_Url()
     Dim newwindowWidth As Integer = 800
     Dim newwindowHeight As Integer = 600
     Dim newwindowResizable As Boolean = True
-    
-    If sNewWindow.Count = 2 Then 
+
+    If sNewWindow.Count >= 2 Then 
       If InStr(sNewWindow[1], "http") Or InStr(sNewWindow[1], "https") Then 
         newwindowURL = sNewWindow[1]
       Else 
@@ -200,18 +212,16 @@ Public Sub wb_Url()
         Endif 
       Endif 
     Endif
-    
-    Print newwindowURL
-    
-    If sNewWindow.Count = 3 Then 
+        
+    If sNewWindow.Count >= 3 Then 
       newwindowWidth = sNewWindow[2]
     Endif
     
-    If sNewWindow.Count = 4 Then 
+    If sNewWindow.Count >= 4 Then 
       newwindowHeight = sNewWindow[3]
     Endif
-    
-    If sNewWindow.Count = 5 Then 
+
+    If sNewWindow.Count >= 5 Then 
       If sNewWindow[4] = "false" Then 
         newwindowResizable = False
       Endif 
