@@ -38,26 +38,26 @@ Public Sub lh_Start()
     Endif
   Next
   
-  Dim sEnv As String = "MINAVEGA_APPDIR=" & sAppArgs[1] & "/app"
-  sEnv &= " MINAVEGA_HOMEDIR=" & User.Home
-  sEnv &= " MINAVEGA_USERNAME=" & User.Name
-  sEnv &= " MINAVEGA_LANG=" & System.Language
-  sEnv &= " MINAVEGA_ARGS=" & minavegaArgs
-  
+  Dim sEnv As String = "MINAVEGA_APPDIR=\"" & sAppArgs[1] & "/app\""
+  sEnv &= " MINAVEGA_HOMEDIR=\"" & User.Home & "\""
+  sEnv &= " MINAVEGA_USERNAME=\"" & User.Name & "\""
+  sEnv &= " MINAVEGA_LANG=\"" & Split(System.Language, ".")[0] & "\""
+  sEnv &= " MINAVEGA_ARGS=\"" & minavegaArgs & "\""
+
   If IsNull(sAppConfig["config"]) = False Then
     If IsNull(sAppConfig["config"]["ini"]) = False Then
       If sAppConfig["config"]["ini"] = True Then 
-        sEnv &= " PHP_INI_SCAN_DIR=:" & sAppArgs[1] & "/config/"
+        sEnv &= " PHP_INI_SCAN_DIR=:\"" & sAppArgs[1] & "/config/\""
       Endif 
     Endif
   Endif 
   
   Shell "php " & Application.Path & "/tools/minavegaserver.php" Wait To sPort
   
-  If sRouter Then 
-    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c " & Application.Path & "/config/config.ini" & " -t " & sAppArgs[1] & "/app/ " & sAppArgs[1] & "/core/router.php" For Input As "Process"
+  If sRouter = True Then 
+    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c \"" & Application.Path & "/config/config.ini\"" & " -t \"" & sAppArgs[1] & "/app/\" \"" & sAppArgs[1] & "/core/router.php\"" For Input As "Process"
   Else
-    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c " & Application.Path & "/config/config.ini" & " -t " & sAppArgs[1] & "/app/" For Input As "Process"
+    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c \"" & Application.Path & "/config/config.ini\"" & " -t \"" & sAppArgs[1] & "/app/\"" For Input As "Process"
   Endif 
   Sleep 1
   
@@ -66,7 +66,6 @@ End
 Public Sub Process_Read()
   
   Dim sLine As String
-  Dim sHost As String
   
   Read #Last, sLine, -256
   
@@ -183,6 +182,47 @@ Public Sub wb_Url()
     Endif 
     
     wb.ExecJavascript("window.location.assign('#minavega=noaction');")   
+  Else If InStr(wb.Url, "#minavega=newwindow") Then
+    Dim sNewWindow As String[] = Split(wb.Url, "|")
+    Dim newwindowURL As String = ""
+    Dim newwindowWidth As Integer = 800
+    Dim newwindowHeight As Integer = 600
+    Dim newwindowResizable As Boolean = True
+    
+    If sNewWindow.Count = 2 Then 
+      If InStr(sNewWindow[1], "http") Then 
+        newwindowURL = sNewWindow[1]
+      Else 
+        If Left(sNewWindow[1]) = "/" Then 
+          newwindowURL = "http://127.0.0.1:" & sPort & sNewWindow[1]
+        Else
+          newwindowURL = "http://127.0.0.1:" & sPort & "/" & sNewWindow[1]
+        Endif 
+      Endif 
+    Endif
+    
+    If sNewWindow.Count = 3 Then 
+      newwindowWidth = sNewWindow[2]
+    Endif
+    
+    If sNewWindow.Count = 4 Then 
+      newwindowHeight = sNewWindow[3]
+    Endif
+    
+    If sNewWindow.Count = 5 Then 
+      If sNewWindow[4] = "false" Then 
+        newwindowResizable = False
+      Endif 
+    Endif
+    
+    wb.ExecJavascript("window.location.assign('#minavega=noaction');")
+    
+    Dim FBrowser As New FMain
+    FBrowser.Width = newwindowWidth
+    FBrowser.Height = newwindowHeight
+    FBrowser.Resizable = newwindowResizable
+    FBrowser.sURL = newwindowURL
+    FBrowser.Show()
   Else If InStr(wb.Url, "#minavega=quit") Then 
     Quit 
   Endif

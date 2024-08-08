@@ -7,9 +7,6 @@
   Icon = Picture["minavega.png"]
   { mnuSobre Menu
     Text = ("MINavega")
-    { Menu1 Menu
-      Text = ("Menu1")
-    }
     { mnuRefresh Menu
       Text = ("Atualizar")
       Shortcut = "F5"
