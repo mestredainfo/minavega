@@ -15,7 +15,7 @@ End
 Public Sub URLLabel1_Click()
   
   Dim sTerm As String = ""
-
+  
   Shell "xdg-open \"https://www.mestredainfo.com.br\"" To sTerm
   
 End

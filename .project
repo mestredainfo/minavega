@@ -2,7 +2,7 @@
 Title=MINavega
 Startup=modMain
 Icon=minavega.png
-Version=0.0.4
+Version=0.0.6
 Component=gb.args
 Component=gb.image
 Component=gb.gtk3

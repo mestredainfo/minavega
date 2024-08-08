@@ -7,11 +7,12 @@
 ' Site: https://www.mestredainfo.com.br
 
 Public Sub Main()  
+
   If Args.Count > 1 Then 
     If Exist(Args[1]) Then
       If Exist(Args[1] & "/package.json") Then 
         Dim sPackage As Variant = JSON.Decode(File.load(Args[1] & "/package.json"), True)
-      
+        
         FMain.sAppConfig = sPackage
         FMain.sAppArgs = Args.All
         FMain.Text = sPackage["app"]["name"]

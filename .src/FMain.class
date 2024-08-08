@@ -193,15 +193,17 @@ Public Sub mnuRefresh_Click()
 End
 
 Public Sub mnuDocumentacao_Click()
-
+  
   Dim sTerm As String = ""
+  
   Shell "xdg-open \"https://www.mestredainfo.com.br/2024/08/minavega.html\"" To sTerm
   
 End
 
 Public Sub mnuApoie_Click()
-
+  
   Dim sTerm As String = ""
+  
   Shell "xdg-open \"https://www.mestredainfo.com.br/p/apoie.html\"" To sTerm
   
 End
