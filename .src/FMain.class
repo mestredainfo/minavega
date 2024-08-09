@@ -11,7 +11,6 @@ Public sAppConfig As Variant
 Private sProcess As Process
 Private sCount As Integer = 1
 Public sURL As String = ""
-Public sRouter As Boolean = False
 Private sPort As Integer = 0
 
 Public Sub Form_Resize()
@@ -43,7 +42,7 @@ Public Sub lh_Start()
   sEnv &= " MINAVEGA_USERNAME=\"" & User.Name & "\""
   sEnv &= " MINAVEGA_LANG=\"" & Split(System.Language, ".")[0] & "\""
   sEnv &= " MINAVEGA_ARGS=\"" & minavegaArgs & "\""
-
+  
   If IsNull(sAppConfig["config"]) = False Then
     If IsNull(sAppConfig["config"]["ini"]) = False Then
       If sAppConfig["config"]["ini"] = True Then 
@@ -54,11 +53,8 @@ Public Sub lh_Start()
   
   Shell "php " & Application.Path & "/tools/minavegaserver.php" Wait To sPort
   
-  If sRouter = True Then 
-    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c \"" & Application.Path & "/config/config.ini\"" & " -t \"" & sAppArgs[1] & "/app/\" \"" & sAppArgs[1] & "/core/router.php\"" For Input As "Process"
-  Else
-    sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c \"" & Application.Path & "/config/config.ini\"" & " -t \"" & sAppArgs[1] & "/app/\"" For Input As "Process"
-  Endif 
+  sProcess = Shell sEnv & " php -S 127.0.0.1:" & sPort & " -c \"" & Application.Path & "/config/config.ini\"" & " -t \"" & sAppArgs[1] & "/app/\" \"" & Application.Path & "/core/router.php\"" For Input As "Process"
+  
   Sleep 1
   
 End
@@ -200,7 +196,7 @@ Public Sub wb_Url()
     Dim newwindowWidth As Integer = 800
     Dim newwindowHeight As Integer = 600
     Dim newwindowResizable As Boolean = True
-
+    
     If sNewWindow.Count >= 2 Then 
       If InStr(sNewWindow[1], "http") Or InStr(sNewWindow[1], "https") Then 
         newwindowURL = sNewWindow[1]
@@ -212,7 +208,7 @@ Public Sub wb_Url()
         Endif 
       Endif 
     Endif
-        
+    
     If sNewWindow.Count >= 3 Then 
       newwindowWidth = sNewWindow[2]
     Endif
@@ -220,7 +216,7 @@ Public Sub wb_Url()
     If sNewWindow.Count >= 4 Then 
       newwindowHeight = sNewWindow[3]
     Endif
-
+    
     If sNewWindow.Count >= 5 Then 
       If sNewWindow[4] = "false" Then 
         newwindowResizable = False

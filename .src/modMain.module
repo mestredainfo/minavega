@@ -19,7 +19,6 @@ Public Sub Main()
         FMain.width = sPackage["app"]["width"]
         FMain.height = sPackage["app"]["height"]
         FMain.Resizable = sPackage["app"]["resizable"]
-        FMain.sRouter = sPackage["config"]["router"]
         
         If Exist(Args[1] & "/icon/" & sPackage["app"]["id"] & ".png") Then
           FMain.Icon = Picture.Load(Args[1] & "/icon/" & sPackage["app"]["id"] & ".png")
