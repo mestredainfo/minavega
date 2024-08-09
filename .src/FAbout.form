@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,73,71)
+  MoveScaled(0,0,73,56)
   Font = Font["12"]
   Text = ("Sobre MINavega")
   Icon = Picture["minavega.png"]
@@ -13,7 +13,8 @@
     Text = ("MINavega")
   }
   { TextArea1 TextArea
-    MoveScaled(1,29,71,41)
+    MoveScaled(1,29,71,25)
+    Text = ("MINavega is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, only version 2 of the License.\n\nMINavega is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.")
     ReadOnly = True
     Wrap = True
     ScrollBar = Scroll.Vertical

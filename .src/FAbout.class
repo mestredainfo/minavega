@@ -6,12 +6,6 @@
 ' Mestre da Info
 ' Site: https://www.mestredainfo.com.br
 
-Public Sub Form_Open()
-  
-  TextArea1.Text = File.Load(Application.Path & "/LICENSE")
-  
-End
-
 Public Sub URLLabel1_Click()
   
   Dim sTerm As String = ""
